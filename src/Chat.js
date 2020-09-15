@@ -21,19 +21,7 @@ function Chat({ messages, setMessage }) {
       })
       .then(function (response) {
         console.log(response);
-        axios
-          .get("https://whatsapp-project-hp.herokuapp.com/messages/sync")
-          .then(function (response) {
-            setMessage(response.data);
-            console.log(response);
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
-          .then(function () {
-            console.log("end of request");
-          });
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
