@@ -24,13 +24,15 @@ function App() {
       });
   }, []);
 
-  console.log(messages);
+  const setMessage = (data) => {
+    setMessages(data);
+  };
 
   return (
     <div className="app">
       <div className="app__body">
         <Sidebar />
-        <Chat messages={messages} />
+        <Chat messages={messages} updateState={setMessage} />
       </div>
     </div>
   );

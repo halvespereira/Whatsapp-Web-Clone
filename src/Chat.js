@@ -6,7 +6,7 @@ import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import axios from "axios";
 
-function Chat({ messages }) {
+function Chat({ messages, setMessage }) {
   const [input, setInput] = useState("");
 
   const sendMessage = async (e) => {
@@ -31,7 +31,7 @@ function Chat({ messages }) {
     axios
       .get("https://whatsapp-project-hp.herokuapp.com/messages/sync")
       .then(function (response) {
-        setMessages(response.data);
+        setMessage(response.data);
         console.log(response);
       })
       .catch(function (error) {
