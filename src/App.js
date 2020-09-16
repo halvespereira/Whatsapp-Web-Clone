@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Home from "./Home";
-import Login from "./Login";
+import Home from "./components/Home";
+import Login from "./components/Login";
 
 import "./App.css";
 

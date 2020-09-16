@@ -8,7 +8,7 @@ import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import "./Login.css";
+import "../Styles/Login.css";
 import fire from "./firebase";
 
 const BootstrapButton = withStyles({
