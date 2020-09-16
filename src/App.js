@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import fire from "./components/firebase";
 
 import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(false);
+  const [userinfo, setUserinfo] = useState([]);
+
+  const auth = fire.auth();
 
   useEffect(() => {
     axios
@@ -24,6 +28,17 @@ function App() {
         console.log("end of request");
       });
   }, []);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(true);
+        setUserinfo(user);
+      } else {
+        setUser(false);
+      }
+    });
+  });
 
   const setMessage = (data) => {
     setMessages(data);

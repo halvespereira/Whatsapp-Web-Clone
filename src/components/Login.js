@@ -107,6 +107,7 @@ const Login = ({ toggleUser }) => {
             <FormControl className={`${classes.margin} inputs`}>
               <InputLabel htmlFor="email-input">Email</InputLabel>
               <Input
+                required
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -124,6 +125,7 @@ const Login = ({ toggleUser }) => {
             <FormControl className={`${classes.margin} inputs`}>
               <InputLabel htmlFor="password-input">Password</InputLabel>
               <Input
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"

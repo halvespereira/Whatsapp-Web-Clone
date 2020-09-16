@@ -1,13 +1,34 @@
 import React, { useState } from "react";
 import "../Styles/Chat.css";
-import { Avatar, IconButton } from "@material-ui/core";
-import { AttachFile, MoreVert, SearchOutlined } from "@material-ui/icons";
+import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { AttachFile, SearchOutlined } from "@material-ui/icons";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import axios from "axios";
 
+const options = [
+  "Group info",
+  "Select messages",
+  "Mute notifications",
+  "Clear messages",
+  "Exit Group",
+];
+
+const ITEM_HEIGHT = 48;
+
 function Chat({ messages, setMessage }) {
   const [input, setInput] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -42,12 +63,40 @@ function Chat({ messages, setMessage }) {
           <IconButton>
             <SearchOutlined />
           </IconButton>
-          <IconButton>
-            <AttachFile />
-          </IconButton>
-          <IconButton>
-            <MoreVert />
-          </IconButton>
+
+          <div>
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={open}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 7,
+                  width: "20ch",
+                },
+              }}
+            >
+              {options.map((option) => (
+                <MenuItem
+                  key={option}
+                  selected={option === "Pyxis"}
+                  onClick={handleClose}
+                >
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
+          </div>
         </div>
       </div>
       <div className="chat__body">
@@ -64,6 +113,9 @@ function Chat({ messages, setMessage }) {
 
       <div className="chat__footer">
         <InsertEmoticonIcon />
+        <IconButton>
+          <AttachFile />
+        </IconButton>
         <form>
           <input
             value={input}

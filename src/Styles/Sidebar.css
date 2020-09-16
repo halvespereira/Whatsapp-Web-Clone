@@ -1,14 +1,18 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  flex: 0.35;
+  flex: 0.26;
 }
 
 .sidebar__header {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
   border-right: 1px solid lightgray;
+}
+
+.sidebar__header > .avatar {
+  margin: 3px 0px 0px 4px;
 }
 
 .sidebar__headerRight {

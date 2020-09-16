@@ -5,7 +5,7 @@ import { Avatar } from "@material-ui/core";
 function SidebarChat() {
   return (
     <div className="sidebarChat">
-      <Avatar />
+      <Avatar className="avatarChat" />
       <div className="sidebarChat__info">
         <h2>Room name</h2>
         <p>This is the last message</p>
