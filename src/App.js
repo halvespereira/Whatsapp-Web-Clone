@@ -48,6 +48,8 @@ function App() {
     setUser(boolean);
   };
 
+  console.log(userinfo);
+
   return user ? (
     <Home messages={messages} updateState={setMessage} />
   ) : (

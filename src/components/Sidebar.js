@@ -81,7 +81,6 @@ function Sidebar() {
                 <MenuItem
                   key={option}
                   selected={option === "Pyxis"}
-                  onClick={handleClose}
                   onClick={menuAction}
                 >
                   {option}
