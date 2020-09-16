@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import Chat from "./Chat";
 import axios from "axios";
+import Home from "./Home";
+import Login from "./Login";
 
 import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState(false);
 
   useEffect(() => {
     axios
@@ -28,13 +29,14 @@ function App() {
     setMessages(data);
   };
 
-  return (
-    <div className="app">
-      <div className="app__body">
-        <Sidebar />
-        <Chat messages={messages} updateState={setMessage} />
-      </div>
-    </div>
+  const toggleUser = (boolean) => {
+    setUser(boolean);
+  };
+
+  return user ? (
+    <Home messages={messages} updateState={setMessage} />
+  ) : (
+    <Login toggleUser={toggleUser} />
   );
 }
 
