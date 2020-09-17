@@ -2,12 +2,12 @@ import React from "react";
 import Chat from "./Chat";
 import Sidebar from "./Sidebar";
 
-const Home = ({ messages, setMessage }) => {
+const Home = ({ users, updateUsers, currentuserinfo }) => {
   return (
     <div className="app">
       <div className="app__body">
-        <Sidebar />
-        <Chat messages={messages} updateState={setMessage} />
+        <Sidebar users={users} currentuserinfo={currentuserinfo} />
+        <Chat />
       </div>
     </div>
   );

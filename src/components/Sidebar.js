@@ -6,7 +6,10 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
 import SidebarChat from "./SidebarChat";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import fire from "./firebase";
+import nextId from "react-id-generator";
+import axios from "axios";
 
 const options = [
   "New Group",
@@ -20,15 +23,16 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-function Sidebar() {
+function Sidebar({ users, currentuserinfo }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [friend, setFriend] = useState("");
+  const [friendschats, setFriendschats] = useState([]);
   const open = Boolean(anchorEl);
 
   const auth = fire.auth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -40,14 +44,34 @@ function Sidebar() {
       auth.signOut();
     }
   };
+  const addFriend = (e) => {
+    e.preventDefault();
+
+    const newFriend = users.find((user) => user.email === friend) || null;
+
+    if (newFriend != null) {
+      setFriendschats([...friendschats, newFriend]);
+    } else alert("User not found!");
+
+    axios
+      .post("https://whatsapp-project-hp.herokuapp.com/user/add/friend", {
+        currentUser: currentuserinfo.uid,
+        newFriend: newFriend,
+      })
+      .then(function (response) {
+        console.log(response, "posted successfully");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    setFriend("");
+  };
 
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar
-          className="avatar"
-          src="https://henriquepereira.me/images/Suit%20Photo%20(4).jpg/"
-        />
+        <Avatar className="avatar" />
         <div className="sidebar__headerRight">
           <IconButton>
             <DonutLargeIcon />
@@ -94,15 +118,24 @@ function Sidebar() {
         className="
       sidebar__search"
       >
-        <div className="sidebar__searchContainer">
-          <SearchOutlined />
-          <input placeholder="Search or start new chat" type="text" />
-        </div>
+        <form className="sidebar__searchContainer">
+          <SearchOutlined className="searchIconSidebar" />
+          <input
+            placeholder="Add new friend by email"
+            type="text"
+            value={friend}
+            onChange={(e) => setFriend(e.target.value)}
+          />
+
+          <IconButton aria-label="delete" onClick={addFriend} type="submit">
+            <PersonAddIcon />
+          </IconButton>
+        </form>
       </div>
       <div className="sidebar__chats">
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
+        {friendschats.map(
+          ((friend) => <SidebarChat friend={friend} key={nextId()} />: null)
+        )}
       </div>
     </div>
   );

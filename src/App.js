@@ -7,17 +7,17 @@ import fire from "./components/firebase";
 import "./App.css";
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState(false);
-  const [userinfo, setUserinfo] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [isloggedin, setIsloggedin] = useState(false);
+  const [currentuserinfo, setCurrentuserinfo] = useState([]);
 
   const auth = fire.auth();
 
   useEffect(() => {
     axios
-      .get("https://whatsapp-project-hp.herokuapp.com/messages/sync")
+      .get("https://whatsapp-project-hp.herokuapp.com/users/sync")
       .then(function (response) {
-        setMessages(response.data);
+        setUsers(response.data);
         console.log(response);
       })
       .catch(function (error) {
@@ -25,35 +25,33 @@ function App() {
         console.log(error);
       })
       .then(function () {
-        console.log("end of request");
+        console.log("Users fetched successfully");
       });
   }, []);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(true);
-        setUserinfo(user);
+        setIsloggedin(true);
+        setCurrentuserinfo(user);
       } else {
-        setUser(false);
+        setIsloggedin(false);
       }
     });
   });
 
-  const setMessage = (data) => {
-    setMessages(data);
+  const setUsersfunction = (data) => {
+    setUsers(data);
   };
 
-  const toggleUser = (boolean) => {
-    setUser(boolean);
-  };
-
-  console.log(userinfo);
-
-  return user ? (
-    <Home messages={messages} updateState={setMessage} />
+  return isloggedin ? (
+    <Home
+      users={users}
+      updateUsers={setUsersfunction}
+      currentuserinfo={currentuserinfo}
+    />
   ) : (
-    <Login toggleUser={toggleUser} />
+    <Login />
   );
 }
 

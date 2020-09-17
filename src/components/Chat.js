@@ -17,7 +17,7 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-function Chat({ messages, setMessage }) {
+function Chat() {
   const [input, setInput] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -30,26 +30,26 @@ function Chat({ messages, setMessage }) {
     setAnchorEl(null);
   };
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
+  // const sendMessage = async (e) => {
+  //   e.preventDefault();
 
-    axios
-      .post("https://whatsapp-project-hp.herokuapp.com/messages/new", {
-        message: input,
-        name: "Henrique",
-        timestamp: "Just now",
-        received: false,
-      })
-      .then(function (response) {
-        console.log(response);
-        window.location.reload();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  //   axios
+  //     .post("https://whatsapp-project-hp.herokuapp.com/messages/new", {
+  //       message: input,
+  //       name: "Henrique",
+  //       timestamp: "Just now",
+  //       received: false,
+  //     })
+  //     .then(function (response) {
+  //       console.log(response);
+  //       window.location.reload();
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
 
-    setInput("");
-  };
+  //   setInput("");
+  // };
 
   return (
     <div className="chat">
@@ -100,15 +100,16 @@ function Chat({ messages, setMessage }) {
         </div>
       </div>
       <div className="chat__body">
-        {messages.map((message) => (
-          <p
-            className={`chat__message ${message.received && "chat__reciever"}`}
-          >
-            <span className="chat__name">{message.name}</span>
-            {message.message}
-            <span className="chat__timestamp">{message.timestamp}</span>
-          </p>
-        ))}
+        <p className="chat__message chat__reciever">
+          <span className="chat__name">Henrique</span>
+          Hello
+          <span className="chat__timestamp">Just now</span>
+        </p>
+        <p className="chat__message ">
+          <span className="chat__name">Henrique</span>
+          Hello
+          <span className="chat__timestamp">Just now</span>
+        </p>
       </div>
 
       <div className="chat__footer">
@@ -123,9 +124,7 @@ function Chat({ messages, setMessage }) {
             placeholder="Type a message"
             type="text"
           />
-          <button onClick={sendMessage} type="submit">
-            Send a message
-          </button>
+          <button type="submit">Send a message</button>
         </form>
         <MicIcon />
       </div>

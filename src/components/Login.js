@@ -10,6 +10,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import "../Styles/Login.css";
 import fire from "./firebase";
+import axios from "axios";
 
 const BootstrapButton = withStyles({
   root: {
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ toggleUser }) => {
+const Login = () => {
   const classes = useStyles();
 
   const [email, setEmail] = useState("");
@@ -59,24 +60,51 @@ const Login = ({ toggleUser }) => {
 
   const auth = fire.auth();
 
-  const signup = () => {
-    auth.createUserWithEmailAndPassword(email, password).catch((err) => {
-      const errorCode = err.errorCode;
-      const errorMessage = err.errorMessage;
-      console.log(errorCode);
-      alert(errorMessage);
-    });
-    toggleUser(true);
+  const signup = async (e) => {
+    e.preventDefault();
+
+    await auth
+      .createUserWithEmailAndPassword(email, password)
+      .catch(function (err) {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        console.log(errorCode, errorMessage);
+        alert(errorMessage);
+      });
+
+    const user = auth.currentUser;
+
+    axios
+      .post("https://whatsapp-project-hp.herokuapp.com/user/new", {
+        name: name,
+        email: email,
+        uid: user.uid,
+        friends: [],
+      })
+      .then(function (response) {
+        console.log(response, "posted successfully");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    setName("");
+    setPassword("");
+    setEmail("");
   };
 
-  const login = () => {
+  const login = (e) => {
+    e.preventDefault();
     auth.signInWithEmailAndPassword(email, password).catch((err) => {
-      const errorCode = err.errorCode;
-      const errorMessage = err.errorMessage;
+      const errorCode = err.code;
+      const errorMessage = err.message;
       console.log(errorCode);
       alert(errorMessage);
     });
-    toggleUser(true);
+
+    setName("");
+    setPassword("");
+    setEmail("");
   };
 
   return (
@@ -142,6 +170,7 @@ const Login = ({ toggleUser }) => {
           <br />
           <div className="buttons">
             <BootstrapButton
+              type="submit"
               onClick={login}
               variant="contained"
               color="primary"

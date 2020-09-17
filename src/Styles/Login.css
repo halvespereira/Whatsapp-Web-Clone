@@ -8,8 +8,8 @@
 
 .form {
   background-color: #ededed;
-  width: 30vw;
-  height: 76vh;
+  width: 27vw;
+  height: 50vh;
   box-shadow: 4px 4px 10px gray;
   display: flex;
   flex-direction: column;
