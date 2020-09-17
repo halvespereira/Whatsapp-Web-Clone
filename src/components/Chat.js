@@ -5,7 +5,6 @@ import { AttachFile, SearchOutlined } from "@material-ui/icons";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
-import axios from "axios";
 
 const options = [
   "Group info",
