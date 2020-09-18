@@ -1,7 +1,6 @@
 import React from "react";
 import "../Styles/SidebarChat.css";
 import { Avatar } from "@material-ui/core";
-import { Style } from "@material-ui/icons";
 
 function SidebarChat({ friend, updateFriend, currentfriend }) {
   const handle = () => {
