@@ -23,7 +23,7 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-function Sidebar({ users, currentuserinfo }) {
+function Sidebar({ users, currentuserinfo, updateFriend, currentfriend }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [friend, setFriend] = useState("");
   const [friendschats, setFriendschats] = useState([]);
@@ -51,19 +51,34 @@ function Sidebar({ users, currentuserinfo }) {
 
     if (newFriend != null) {
       setFriendschats([...friendschats, newFriend]);
+      axios
+        .post("https://whatsapp-project-hp.herokuapp.com/user/add/friend", {
+          currentUser: currentuserinfo.uid,
+          newFriend: newFriend,
+        })
+        .then(function (response) {
+          console.log(response, "posted successfully");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     } else alert("User not found!");
 
-    axios
-      .post("https://whatsapp-project-hp.herokuapp.com/user/add/friend", {
-        currentUser: currentuserinfo.uid,
-        newFriend: newFriend,
-      })
-      .then(function (response) {
-        console.log(response, "posted successfully");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const friendObj = {
+      messages: [],
+      name: newFriend.name,
+      email: newFriend.email,
+      uid: newFriend.uid,
+    };
+
+    if (!users.find((user) => user.uid === currentuserinfo.uid)) {
+      window.location.reload();
+    } else {
+      users.find(
+        (user) =>
+          user.uid === currentuserinfo.uid && user.friends.push(friendObj)
+      );
+    }
 
     setFriend("");
   };
@@ -133,8 +148,17 @@ function Sidebar({ users, currentuserinfo }) {
         </form>
       </div>
       <div className="sidebar__chats">
-        {friendschats.map(
-          ((friend) => <SidebarChat friend={friend} key={nextId()} />: null)
+        {users.map((user) =>
+          user.uid === currentuserinfo.uid
+            ? user.friends.map((friend) => (
+                <SidebarChat
+                  friend={friend}
+                  key={nextId()}
+                  updateFriend={updateFriend}
+                  currentfriend={currentfriend}
+                />
+              ))
+            : null
         )}
       </div>
     </div>

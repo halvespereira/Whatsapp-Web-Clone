@@ -10,45 +10,46 @@ function App() {
   const [users, setUsers] = useState([]);
   const [isloggedin, setIsloggedin] = useState(false);
   const [currentuserinfo, setCurrentuserinfo] = useState([]);
+  const [currentfriend, setCurrentfriend] = useState({});
 
   const auth = fire.auth();
 
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setIsloggedin(true);
+      setCurrentuserinfo(user);
+    } else {
+      setIsloggedin(false);
+    }
+  });
+
   useEffect(() => {
+    const source = axios.CancelToken.source();
     axios
       .get("https://whatsapp-project-hp.herokuapp.com/users/sync")
       .then(function (response) {
         setUsers(response.data);
-        console.log(response);
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
-      })
-      .then(function () {
-        console.log("Users fetched successfully");
+        console.log(error, "Could not fetch users");
       });
+
+    return () => {
+      source.cancel();
+    };
   }, []);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsloggedin(true);
-        setCurrentuserinfo(user);
-      } else {
-        setIsloggedin(false);
-      }
-    });
-  });
-
-  const setUsersfunction = (data) => {
-    setUsers(data);
+  const updateCurrentfriend = (data) => {
+    setCurrentfriend(data);
   };
 
   return isloggedin ? (
     <Home
       users={users}
-      updateUsers={setUsersfunction}
       currentuserinfo={currentuserinfo}
+      updateFriend={updateCurrentfriend}
+      currentfriend={currentfriend}
     />
   ) : (
     <Login />

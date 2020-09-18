@@ -87,10 +87,6 @@ const Login = () => {
       .catch(function (error) {
         console.log(error);
       });
-
-    setName("");
-    setPassword("");
-    setEmail("");
   };
 
   const login = (e) => {
