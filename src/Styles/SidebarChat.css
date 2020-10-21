@@ -5,6 +5,10 @@
   border-bottom: 2px solid #f6f6f6;
 }
 
+.activeFriend {
+  background-color: #ebebeb;
+}
+
 .sidebarChat > .avatarChat {
   margin: 15px 0px 0px 0px;
 }

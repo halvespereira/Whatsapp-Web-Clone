@@ -5,12 +5,10 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import EmailRoundedIcon from "@material-ui/icons/EmailRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import "../Styles/Login.css";
-import fire from "./firebase";
-import axios from "axios";
+import "../Styles/UserAuthentication.css";
+import { loginFunction } from "../helperFunctions";
 
 const BootstrapButton = withStyles({
   root: {
@@ -21,6 +19,7 @@ const BootstrapButton = withStyles({
     border: "1px solid",
     lineHeight: 1.5,
     backgroundColor: "#4AC959",
+    width: "200px",
 
     fontFamily: [
       "-apple-system",
@@ -51,82 +50,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
-  const classes = useStyles();
-
+const LoginForm = () => {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
-  const auth = fire.auth();
-
-  const signup = async (e) => {
-    e.preventDefault();
-
-    await auth
-      .createUserWithEmailAndPassword(email, password)
-      .catch(function (err) {
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        console.log(errorCode, errorMessage);
-        alert(errorMessage);
-      });
-
-    const user = auth.currentUser;
-
-    axios
-      .post("https://whatsapp-project-hp.herokuapp.com/user/new", {
-        name: name,
-        email: email,
-        uid: user.uid,
-        friends: [],
-      })
-      .then(function (response) {
-        console.log(response, "posted successfully");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+  const classes = useStyles();
 
   const login = (e) => {
     e.preventDefault();
-    auth.signInWithEmailAndPassword(email, password).catch((err) => {
-      const errorCode = err.code;
-      const errorMessage = err.message;
-      console.log(errorCode);
-      alert(errorMessage);
-    });
 
-    setName("");
-    setPassword("");
-    setEmail("");
+    loginFunction(email, password, setPassword, setEmail);
   };
 
   return (
-    <div className="Login">
-      <div className="form">
-        <div className="title">Welcome!</div>
+    <div className="form">
+      <div className="title">Login</div>
 
-        <form>
-          <div>
-            <FormControl className={`${classes.margin} inputs`}>
-              <InputLabel htmlFor="name-input">Name</InputLabel>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-                name="name"
-                id="name-input"
-                startAdornment={
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </div>
-
+      <form>
+        <div className="inputsDiv">
           <div>
             <FormControl className={`${classes.margin} inputs`}>
               <InputLabel htmlFor="email-input">Email</InputLabel>
@@ -163,32 +103,23 @@ const Login = () => {
               />
             </FormControl>
           </div>
-          <br />
-          <div className="buttons">
-            <BootstrapButton
-              type="submit"
-              onClick={login}
-              variant="contained"
-              color="primary"
-              disableRipple
-              className={classes.margin}
-            >
-              Login
-            </BootstrapButton>
-            <BootstrapButton
-              onClick={signup}
-              variant="contained"
-              color="primary"
-              disableRipple
-              className={classes.margin}
-            >
-              Signup
-            </BootstrapButton>
-          </div>
-        </form>
-      </div>
+        </div>
+
+        <br />
+        <div className="buttons">
+          <BootstrapButton
+            onClick={login}
+            variant="contained"
+            color="primary"
+            disableRipple
+            className={classes.margin}
+          >
+            Login
+          </BootstrapButton>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default Login;
+export default LoginForm;

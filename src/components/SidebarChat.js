@@ -2,21 +2,23 @@ import React from "react";
 import "../Styles/SidebarChat.css";
 import { Avatar } from "@material-ui/core";
 
-function SidebarChat({ friend, updateFriend, currentfriend }) {
-  const handle = () => {
-    updateFriend({
+const SidebarChat = ({ friend, currentFriend, setCurrentFriend }) => {
+  const handleCurrentFriend = () => {
+    setCurrentFriend({
       name: friend.name,
       uid: friend.uid,
       email: friend.email,
-      messages: [],
     });
   };
 
-  return currentfriend.uid === friend.uid ? (
+  return (
     <div
-      className="sidebarChat"
-      style={{ backgroundColor: "#ebebeb" }}
-      onClick={handle}
+      className={
+        currentFriend.uid === friend.uid
+          ? "sidebarChat activeFriend"
+          : "sidebarChat"
+      }
+      onClick={handleCurrentFriend}
     >
       <Avatar className="avatarChat" />
       <div className="sidebarChat__info">
@@ -24,15 +26,7 @@ function SidebarChat({ friend, updateFriend, currentfriend }) {
         <p>{friend.email}</p>
       </div>
     </div>
-  ) : (
-    <div className="sidebarChat" onClick={handle}>
-      <Avatar className="avatarChat" />
-      <div className="sidebarChat__info">
-        <h2>{friend.name}</h2>
-        <p>{friend.email}</p>
-      </div>
-    </div>
   );
-}
+};
 
 export default SidebarChat;
