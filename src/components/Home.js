@@ -33,7 +33,7 @@ const Home = ({
         });
         setFriendsList(friends);
       });
-  }, [db]);
+  }, [db, auth.currentUser.uid, setCurrentUserDoc, setFriendsList]);
 
   return (
     <div className="app">
