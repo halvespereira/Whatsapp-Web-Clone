@@ -2,9 +2,9 @@ import React from "react";
 import "../Styles/Chat.css";
 
 const Message = ({ msg, currentUserDoc }) => {
-  const { name, sender, message, date, time } = msg;
+  const { sender, message, date, time } = msg;
   return (
-    <>
+    <div className="chat__div">
       <p
         className={
           sender === currentUserDoc.uid
@@ -12,13 +12,12 @@ const Message = ({ msg, currentUserDoc }) => {
             : "chat__message"
         }
       >
-        <span className="chat__name">{name}</span>
         {message}
         <span className="chat__timestamp">
-          On {date}, at: {time}
+          On {date}, At: {time}
         </span>
       </p>
-    </>
+    </div>
   );
 };
 

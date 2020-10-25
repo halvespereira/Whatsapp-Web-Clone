@@ -69,14 +69,14 @@ const LoginForm = () => {
         <div className="inputsDiv">
           <div>
             <FormControl className={`${classes.margin} inputs`}>
-              <InputLabel htmlFor="email-input">Email</InputLabel>
+              <InputLabel htmlFor="emailLogin">Email</InputLabel>
               <Input
                 required
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 name="email"
-                id="email-input"
+                id="emailLogin"
                 startAdornment={
                   <InputAdornment position="start">
                     <EmailRoundedIcon />
@@ -87,14 +87,14 @@ const LoginForm = () => {
           </div>
           <div>
             <FormControl className={`${classes.margin} inputs`}>
-              <InputLabel htmlFor="password-input">Password</InputLabel>
+              <InputLabel htmlFor="passwordLogin">Password</InputLabel>
               <Input
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 name="password"
-                id="password-input"
+                id="passwordLogin"
                 startAdornment={
                   <InputAdornment position="start">
                     <LockRoundedIcon />

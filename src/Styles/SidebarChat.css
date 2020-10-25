@@ -3,6 +3,11 @@
   padding: 9px 13px 16px 13px;
   cursor: pointer;
   border-bottom: 2px solid #f6f6f6;
+  overflow-y: auto;
+}
+
+.sidebarChat::-webkit-scrollbar {
+  display: none;
 }
 
 .activeFriend {
@@ -20,10 +25,12 @@
 .sidebarChat__info > h2 {
   font-size: 16px;
   margin-bottom: 2px;
+  font-weight: 500;
 }
 
 .sidebarChat__info > p {
   margin: 0;
+  color: gray;
 }
 
 .sidebarChat__info {

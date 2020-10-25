@@ -4,11 +4,18 @@ import Message from "./Message";
 
 const ChatBody = ({ messagesList, currentUserDoc }) => {
   if (!messagesList) {
-    return <div className="chat__body"></div>;
+    return (
+      <>
+        <div className="chat__body"></div>
+      </>
+    );
   } else {
+    const newMessagesList = messagesList.sort(function (a, b) {
+      return new Date(a.milliseconds) - new Date(b.milliseconds);
+    });
     return (
       <div className="chat__body">
-        {messagesList.map((msg, idx) => (
+        {newMessagesList.map((msg, idx) => (
           <Message msg={msg} currentUserDoc={currentUserDoc} key={idx} />
         ))}
       </div>

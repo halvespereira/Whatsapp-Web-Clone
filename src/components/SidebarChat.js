@@ -1,7 +1,7 @@
 import React from "react";
 import "../Styles/SidebarChat.css";
 import { Avatar } from "@material-ui/core";
-import { getFriendMessages } from "../helperFunctions";
+import { getFriendMessages, setTheCurrentFriend } from "../helperFunctions";
 
 const SidebarChat = ({
   friend,
@@ -11,11 +11,7 @@ const SidebarChat = ({
   currentUserDoc,
 }) => {
   const handleCurrentFriend = () => {
-    setCurrentFriend({
-      name: friend.name,
-      uid: friend.uid,
-      email: friend.email,
-    });
+    setTheCurrentFriend(setCurrentFriend, friend);
 
     getFriendMessages(setMessagesList, currentUserDoc, friend);
   };

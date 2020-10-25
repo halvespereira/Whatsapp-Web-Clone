@@ -14,7 +14,6 @@ export const signupFunction = async (email, password, name) => {
     });
 
   const user = auth.currentUser;
-  console.log(user);
 
   db.collection("users")
     .doc(user.uid)
@@ -22,6 +21,8 @@ export const signupFunction = async (email, password, name) => {
       name: name,
       email: email,
       uid: user.uid,
+      lastSeenDate: new Date().toLocaleDateString(),
+      lastSeenTime: new Date().toLocaleTimeString(),
     })
     .then(function () {
       console.log("user added successfully");
@@ -31,8 +32,8 @@ export const signupFunction = async (email, password, name) => {
     });
 };
 
-export const loginFunction = (email, password, setPassword, setEmail) => {
-  auth.signInWithEmailAndPassword(email, password).catch((err) => {
+export const loginFunction = async (email, password, setPassword, setEmail) => {
+  await auth.signInWithEmailAndPassword(email, password).catch((err) => {
     const errorCode = err.code;
     const errorMessage = err.message;
     console.log(errorCode);
@@ -59,6 +60,8 @@ export const addFriendFunction = async (friend, currentUserDoc) => {
             name: currentUserDoc.name,
             email: currentUserDoc.email,
             uid: currentUserDoc.uid,
+            lastSeenDate: currentUserDoc.lastSeenDate,
+            lastSeenTime: currentUserDoc.lastSeenTime,
           })
           .then(function () {
             console.log("Friend added successfully");
@@ -76,6 +79,8 @@ export const addFriendFunction = async (friend, currentUserDoc) => {
             name: doc.data().name,
             email: doc.data().email,
             uid: doc.data().uid,
+            lastSeenDate: doc.data().lastSeenDate,
+            lastSeenTime: doc.data().lastSeenTime,
           })
           .then(function () {
             console.log("Friend added successfully");
@@ -99,6 +104,7 @@ export const sendMessageFunction = (message, currentFriend, currentUserDoc) => {
       sender: currentUserDoc.uid,
       date: new Date().toLocaleDateString(),
       time: new Date().toLocaleTimeString(),
+      milliseconds: new Date().getTime(),
     });
 
   db.collection("users")
@@ -111,6 +117,20 @@ export const sendMessageFunction = (message, currentFriend, currentUserDoc) => {
       sender: currentUserDoc.uid,
       date: new Date().toLocaleDateString(),
       time: new Date().toLocaleTimeString(),
+      milliseconds: new Date().getTime(),
+    });
+
+  db.collection("users")
+    .doc(currentUserDoc.uid)
+    .update({
+      lastSeenDate: new Date().toLocaleDateString(),
+      lastSeenTime: new Date().toLocaleTimeString(),
+    })
+    .then(function () {
+      console.log("Last seen updated");
+    })
+    .catch(function (error) {
+      console.log(error);
     });
 };
 
@@ -126,5 +146,33 @@ export const getFriendMessages = (setMessagesList, currentUserDoc, friend) => {
         messages.push(doc.data());
       });
       setMessagesList(messages);
+    });
+
+  db.collection("users")
+    .doc(currentUserDoc.uid)
+    .update({
+      lastSeenDate: new Date().toLocaleDateString(),
+      lastSeenTime: new Date().toLocaleTimeString(),
+    })
+    .then(function () {
+      console.log("Last seen updated");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+export const setTheCurrentFriend = (setCurrentFriend, friend) => {
+  db.collection("users")
+    .doc(friend.uid)
+    .onSnapshot(function (doc) {
+      const { name, uid, email, lastSeenDate, lastSeenTime } = doc.data();
+      setCurrentFriend({
+        name,
+        email,
+        uid,
+        lastSeenDate,
+        lastSeenTime,
+      });
     });
 };

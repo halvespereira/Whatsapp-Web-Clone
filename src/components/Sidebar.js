@@ -2,7 +2,6 @@ import React from "react";
 import "../Styles/Sidebar.css";
 
 import SidebarChats from "./SidebarChats";
-
 import SidebarHeader from "./SidebarHeader";
 import SidebarAddFriend from "./SidebarAddFriend";
 
@@ -16,7 +15,10 @@ function Sidebar({
 }) {
   return (
     <div className="sidebar">
-      <SidebarHeader />
+      <SidebarHeader
+        currentUserDoc={currentUserDoc}
+        setCurrentFriend={setCurrentFriend}
+      />
       <SidebarAddFriend
         currentUserDoc={currentUserDoc}
         setCurrentUserDoc={setCurrentUserDoc}

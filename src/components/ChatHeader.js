@@ -31,7 +31,11 @@ const ChatHeader = ({ currentFriend }) => {
       <Avatar />
       <div className="chat__headerInfo">
         <h3>{currentFriend.name}</h3>
-        <p>Last seen at...</p>
+        <p>
+          {currentFriend
+            ? `last seen ${currentFriend.lastSeenDate} at ${currentFriend.lastSeenTime}`
+            : "Pick a chat"}
+        </p>
       </div>
       <div className="chat__headerRight">
         <IconButton>

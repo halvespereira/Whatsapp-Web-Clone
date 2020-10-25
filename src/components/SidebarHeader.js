@@ -6,7 +6,7 @@ import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
 import fire from "../firebase";
 import "../Styles/Sidebar.css";
 
-const SidebarHeader = () => {
+const SidebarHeader = ({ currentUserDoc, setCurrentFriend }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -14,6 +14,7 @@ const SidebarHeader = () => {
 
   const menuAction = (e) => {
     if (e.currentTarget.textContent === "Log out") {
+      setCurrentFriend("");
       auth.signOut();
     }
   };
@@ -40,12 +41,19 @@ const SidebarHeader = () => {
   return (
     <div className="sidebar__header">
       <Avatar className="avatar" />
+      <div className="loggedIn__div">
+        <p className="loggedIn__as">Logged in as:</p>
+        <p className="loggedIn__user">
+          {currentUserDoc ? currentUserDoc.name : null}
+        </p>
+      </div>
+
       <div className="sidebar__headerRight">
         <IconButton>
-          <DonutLargeIcon />
+          <DonutLargeIcon id="donutIcon" />
         </IconButton>
         <IconButton>
-          <ChatIcon />
+          <ChatIcon id="chatIcon" />
         </IconButton>
         <div>
           <IconButton
@@ -54,7 +62,7 @@ const SidebarHeader = () => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <MoreVertIcon />
+            <MoreVertIcon id="verticalIcon" />
           </IconButton>
           <Menu
             id="long-menu"
