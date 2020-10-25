@@ -1,5 +1,4 @@
 import fire from "./firebase";
-import firebase from "firebase";
 
 const auth = fire.auth();
 const db = fire.firestore();
@@ -44,26 +43,22 @@ export const loginFunction = (email, password, setPassword, setEmail) => {
   setEmail("");
 };
 
-export const addFriendFunction = async (
-  friend,
-  currentUserDoc,
-  setCurrentUserDoc
-) => {
+export const addFriendFunction = async (friend, currentUserDoc) => {
   await db
     .collection("users")
     .where("email", "==", friend)
     .get()
     .then(function (docs) {
-      docs.forEach(function (doc) {
-        db.collection("users")
+      docs.forEach(async function (doc) {
+        await db
+          .collection("users")
           .doc(doc.data().uid)
           .collection("friends")
-          .doc(setCurrentUserDoc.uid)
+          .doc(currentUserDoc.uid)
           .set({
             name: currentUserDoc.name,
             email: currentUserDoc.email,
             uid: currentUserDoc.uid,
-            messages: [],
           })
           .then(function () {
             console.log("Friend added successfully");
@@ -72,7 +67,8 @@ export const addFriendFunction = async (
             console.log(err);
           });
 
-        db.collection("users")
+        await db
+          .collection("users")
           .doc(currentUserDoc.uid)
           .collection("friends")
           .doc(doc.data().uid)
@@ -80,7 +76,6 @@ export const addFriendFunction = async (
             name: doc.data().name,
             email: doc.data().email,
             uid: doc.data().uid,
-            messages: [],
           })
           .then(function () {
             console.log("Friend added successfully");
@@ -88,45 +83,48 @@ export const addFriendFunction = async (
           .catch(function (err) {
             console.log(err);
           });
-
-        // setCurrentUserDoc({
-        //   ...currentUserDoc,
-        //   friends: [
-        //     ...currentUserDoc.friends,
-        //     {
-        //       name: doc.data().name,
-        //       email: doc.data().email,
-        //       uid: doc.data().uid,
-        //       messages: [],
-        //     },
-        //   ],
-        // });
       });
     });
 };
 
-export const sendMessageFunction = async (
-  message,
-  currentFriend,
-  currentUserDoc,
-  setCurrentUserDoc
-) => {
-  // const Obj = {
-  //   ...currentUserDoc,
-  //   friends: currentUserDoc.friends.map((friend) =>
-  //     friend.uid === currentFriend.uid
-  //       ? {
-  //           ...friend,
-  //           messages: [
-  //             ...friend.messages,
-  //             {
-  //               message: message,
-  //               sender: currentUserDoc.uid,
-  //             },
-  //           ],
-  //         }
-  //       : { ...friend }
-  //   ),
-  // };
-  // setCurrentUserDoc(Obj);
+export const sendMessageFunction = (message, currentFriend, currentUserDoc) => {
+  db.collection("users")
+    .doc(currentUserDoc.uid)
+    .collection("friends")
+    .doc(currentFriend.uid)
+    .collection("messages")
+    .add({
+      message,
+      name: currentUserDoc.name,
+      sender: currentUserDoc.uid,
+      date: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString(),
+    });
+
+  db.collection("users")
+    .doc(currentFriend.uid)
+    .collection("friends")
+    .doc(currentUserDoc.uid)
+    .collection("messages")
+    .add({
+      message,
+      sender: currentUserDoc.uid,
+      date: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString(),
+    });
+};
+
+export const getFriendMessages = (setMessagesList, currentUserDoc, friend) => {
+  db.collection("users")
+    .doc(currentUserDoc.uid)
+    .collection("friends")
+    .doc(friend.uid)
+    .collection("messages")
+    .onSnapshot(function (querySnapshot) {
+      let messages = [];
+      querySnapshot.forEach(function (doc) {
+        messages.push(doc.data());
+      });
+      setMessagesList(messages);
+    });
 };

@@ -8,6 +8,10 @@ const Home = ({
   setCurrentUserDoc,
   currentFriend,
   setCurrentFriend,
+  friendsList,
+  setFriendsList,
+  messagesList,
+  setMessagesList,
 }) => {
   const db = fire.firestore();
   const auth = fire.auth();
@@ -17,6 +21,17 @@ const Home = ({
       .doc(auth.currentUser.uid)
       .onSnapshot(function (doc) {
         setCurrentUserDoc(doc.data());
+      });
+
+    db.collection("users")
+      .doc(auth.currentUser.uid)
+      .collection("friends")
+      .onSnapshot(function (querySnapshot) {
+        let friends = [];
+        querySnapshot.forEach(function (doc) {
+          friends.push(doc.data());
+        });
+        setFriendsList(friends);
       });
   }, [db]);
 
@@ -28,12 +43,15 @@ const Home = ({
           setCurrentUserDoc={setCurrentUserDoc}
           currentFriend={currentFriend}
           setCurrentFriend={setCurrentFriend}
+          friendsList={friendsList}
+          setMessagesList={setMessagesList}
         />
         <Chat
           currentUserDoc={currentUserDoc}
           setCurrentUserDoc={setCurrentUserDoc}
           currentFriend={currentFriend}
           setCurrentFriend={setCurrentFriend}
+          messagesList={messagesList}
         />
       </div>
     </div>

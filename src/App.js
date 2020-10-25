@@ -9,6 +9,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserDoc, setCurrentUserDoc] = useState(null);
   const [currentFriend, setCurrentFriend] = useState("");
+  const [friendsList, setFriendsList] = useState(null);
+  const [messagesList, setMessagesList] = useState(null);
 
   const auth = fire.auth();
 
@@ -28,6 +30,10 @@ function App() {
       setCurrentUserDoc={setCurrentUserDoc}
       currentFriend={currentFriend}
       setCurrentFriend={setCurrentFriend}
+      friendsList={friendsList}
+      setFriendsList={setFriendsList}
+      messagesList={messagesList}
+      setMessagesList={setMessagesList}
     />
   ) : (
     <UserAuthentication />

@@ -11,6 +11,8 @@ function Sidebar({
   setCurrentUserDoc,
   currentFriend,
   setCurrentFriend,
+  friendsList,
+  setMessagesList,
 }) {
   return (
     <div className="sidebar">
@@ -23,6 +25,8 @@ function Sidebar({
         currentUserDoc={currentUserDoc}
         currentFriend={currentFriend}
         setCurrentFriend={setCurrentFriend}
+        friendsList={friendsList}
+        setMessagesList={setMessagesList}
       />
     </div>
   );

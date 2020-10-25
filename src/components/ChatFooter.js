@@ -12,12 +12,7 @@ const ChatFooter = ({ currentFriend, currentUserDoc, setCurrentUserDoc }) => {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    sendMessageFunction(
-      message,
-      currentFriend,
-      currentUserDoc,
-      setCurrentUserDoc
-    );
+    sendMessageFunction(message, currentFriend, currentUserDoc);
 
     setMessage("");
   };

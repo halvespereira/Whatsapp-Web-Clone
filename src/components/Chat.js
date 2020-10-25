@@ -8,12 +8,12 @@ function Chat({
   currentUserDoc,
   setCurrentUserDoc,
   currentFriend,
-  setCurrentFriend,
+  messagesList,
 }) {
   return (
     <div className="chat">
       <ChatHeader currentFriend={currentFriend} />
-      <ChatBody currentFriend={currentFriend} currentUserDoc={currentUserDoc} />
+      <ChatBody currentUserDoc={currentUserDoc} messagesList={messagesList} />
       <ChatFooter
         setCurrentUserDoc={setCurrentUserDoc}
         currentFriend={currentFriend}
