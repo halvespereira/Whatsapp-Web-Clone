@@ -1,4 +1,5 @@
 import fire from "./firebase";
+import moment from "moment-timezone";
 
 const auth = fire.auth();
 const db = fire.firestore();
@@ -21,8 +22,8 @@ export const signupFunction = async (email, password, name) => {
       name: name,
       email: email,
       uid: user.uid,
-      lastSeenDate: new Date().toLocaleDateString(),
-      lastSeenTime: new Date().toLocaleTimeString(),
+      lastSeenDate: moment(new Date()).tz("America/Chicago").format("L"),
+      lastSeenTime: moment(new Date()).tz("America/Chicago").format("LT"),
     })
     .then(function () {
       console.log("user added successfully");
@@ -102,8 +103,8 @@ export const sendMessageFunction = (message, currentFriend, currentUserDoc) => {
       message,
       name: currentUserDoc.name,
       sender: currentUserDoc.uid,
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
+      date: moment(new Date()).tz("America/Chicago").format("L"),
+      time: moment(new Date()).tz("America/Chicago").format("LT"),
       milliseconds: new Date().getTime(),
     });
 
@@ -115,16 +116,16 @@ export const sendMessageFunction = (message, currentFriend, currentUserDoc) => {
     .add({
       message,
       sender: currentUserDoc.uid,
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
+      date: moment(new Date()).tz("America/Chicago").format("L"),
+      time: moment(new Date()).tz("America/Chicago").format("LT"),
       milliseconds: new Date().getTime(),
     });
 
   db.collection("users")
     .doc(currentUserDoc.uid)
     .update({
-      lastSeenDate: new Date().toLocaleDateString(),
-      lastSeenTime: new Date().toLocaleTimeString(),
+      lastSeenDate: moment(new Date()).tz("America/Chicago").format("L"),
+      lastSeenTime: moment(new Date()).tz("America/Chicago").format("LT"),
     })
     .then(function () {
       console.log("Last seen updated");
@@ -151,8 +152,8 @@ export const getFriendMessages = (setMessagesList, currentUserDoc, friend) => {
   db.collection("users")
     .doc(currentUserDoc.uid)
     .update({
-      lastSeenDate: new Date().toLocaleDateString(),
-      lastSeenTime: new Date().toLocaleTimeString(),
+      lastSeenDate: moment(new Date()).tz("America/Chicago").format("L"),
+      lastSeenTime: moment(new Date()).tz("America/Chicago").format("LT"),
     })
     .then(function () {
       console.log("Last seen updated");
