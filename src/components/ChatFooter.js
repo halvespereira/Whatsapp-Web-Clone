@@ -11,7 +11,6 @@ const ChatFooter = ({ currentFriend, currentUserDoc, setCurrentUserDoc }) => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    e.stopImmediatePropagation();
 
     sendMessageFunction(message, currentFriend, currentUserDoc);
 
